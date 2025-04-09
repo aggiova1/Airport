@@ -4,6 +4,7 @@
  */
 package br.eti.agatha.airports.controllers;
 
+import br.eti.agatha.airports.DTO.AirportMinDTO;
 import br.eti.agatha.airports.entities.Airport;
 import br.eti.agatha.airports.service.AirportService;
 import java.util.List;
@@ -54,6 +55,36 @@ public class AirportController {
             // ok, devolve 200
             return ResponseEntity.ok(result);
         }
-        
     }
-}
+    
+    
+    @GetMapping("/country/{countryName}")
+    public ResponseEntity<List<AirportMinDTO>> findByCountryIgnoreCase(@PathVariable String countryName) {
+        
+        List<AirportMinDTO> result = airportService.findByCountry(countryName);
+        if (result.isEmpty()) {
+            // ops.. lista vazia..
+            // not found devolve 404
+            return ResponseEntity.notFound().build();
+            
+        } else {
+            // eba! tem dados!
+            // ok devolve 200
+            return ResponseEntity.ok(result);
+        }
+    }
+    @GetMapping("/iatacode/{iataCode}")
+    public ResponseEntity<Airport> findByIataCode(@PathVariable String iataCode) {
+        Airport result = airportService.findByIataCode(iataCode);
+        
+        if (result == null) {
+            
+            return ResponseEntity.notFound().build();
+            
+        } else { 
+            return ResponseEntity.ok(result);
+        }
+    }
+    }
+    
+

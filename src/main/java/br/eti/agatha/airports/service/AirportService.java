@@ -4,6 +4,7 @@
  */
 package br.eti.agatha.airports.service;
 
+import br.eti.agatha.airports.DTO.AirportMinDTO;
 import br.eti.agatha.airports.entities.Airport;
 import br.eti.agatha.airports.repositories.AirportRepository;
 import java.util.List;
@@ -33,6 +34,25 @@ public class AirportService {
      */
     public List<Airport> findByCity(String city) {
         List<Airport> result = airportRepository.findByCityIgnoreCase(city);
+        return result;
+    }
+    
+    /**
+     * Retorna DTO AirportsMinDTO filtrado por country (pais)
+     * 
+     * @param country
+     * @return
+     */
+    public List<AirportMinDTO> findByCountry(String country) { 
+        List<Airport> resultAirport = airportRepository.findByCountryIgnoreCase(country);
+        
+        List<AirportMinDTO> resultDTO = resultAirport.stream()
+                .map(x -> new AirportMinDTO(x)).toList();
+        
+        return resultDTO;
+    }
+    public Airport findByIataCode(String iataCode) {
+        Airport result = airportRepository.findByIataCode(iataCode);
         return result;
     }
 }
